@@ -5,6 +5,14 @@ import { toast } from 'react-hot-toast';
 const MemberForm = () => {
     const api = import.meta.env.VITE_API_URL;
 
+    const schoolType = {
+        "University/College": "university",
+        "High School": "high_school",
+        "Primary School": "primary_school",
+        "Other": "other"
+    }
+    
+
     const formik = useFormik({
         initialValues: {
             firstName: '',
@@ -51,10 +59,10 @@ const MemberForm = () => {
                     alt_phone: values.altPhone,
                     email: values.email,
                     is_student: values.isStudent ? "Yes" : "No",
-                    school_type: values.isStudent ? values.school_type : '',
+                    school_type: values.isStudent ? schoolType[values.school_type]: '',
                     school: values.isStudent ? values.school : '',
                     occupation: values.occupation,
-                    ag_group: parseInt(values.group),
+                    ag_group: values.group ? parseInt(values.group, 10) : null,
                     gender: values.gender,
                     status: values.status,
                     contact_name: values.contact_name,
@@ -85,14 +93,14 @@ const MemberForm = () => {
     });
 
     return (
-        <div className="min-h-screen items-center justify-center bg-gray-900 text-white p-6">
-            <div className="w-full max-w-3xl bg-gray-800 shadow-lg rounded-lg p-8">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-6">
             <div className="mb-6 p-6 bg-gray-700 rounded-lg shadow-md">
                     <h1 className="text-2xl font-bold text-center text-indigo-600 mb-2">Vault Ministry</h1>
                     <p className="text-gray-300 text-center">
                         Welcome to Vault Forms. Please ensure the details you provide are correct and accurate. This information helps us stay connected and provide better support within the Vault family.
                     </p>
-                </div>
+            </div>
+            <div className="w-full max-w-3xl bg-gray-800 shadow-lg rounded-lg p-8">
                 <form onSubmit={formik.handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <InputField formik={formik} name="firstName" label="First Name" />
                     <InputField formik={formik} name="secondName" label="Second Name" />
@@ -111,7 +119,16 @@ const MemberForm = () => {
                         </>
                     )}
                     <InputField formik={formik} name="occupation" label="Occupation" />
-                    <SelectField formik={formik} name="group" label="AG Group" options={["Transformers", "Pacesetters", "Ignition", "Relentless", "Innovators", "Gifted", "Visionaries", "Elevated"]} />
+                    <SelectField formik={formik} name="group" label="AG Group" options={[
+                        { id: 1, name: "Transformers" },
+                        { id: 2, name: "Pacesetters" },
+                        { id: 3, name: "Ignition" },
+                        { id: 4, name: "Relentless" },
+                        { id: 5, name: "Innovators" },
+                        { id: 6, name: "Gifted" },
+                        { id: 7, name: "Visionaries" },
+                        { id: 8, name: "Elevated" }
+                    ]} />
                     {/* <SelectField formik={formik} name="status" label="Status" options={["active", "inactive"]} /> */}
                     <fieldset className="col-span-1 md:col-span-2 mt-6">
                         <legend className="text-lg font-medium mb-4">Emergency Contact (next of kin)</legend>
@@ -128,7 +145,7 @@ const MemberForm = () => {
                 </form>
             </div>
             <div className='flex items-center justify-center m-4'>
-                <span>Vault Forms powered by Vault Tech</span>
+                <span>Vault Forms, powered by <strong>VaulTech</strong></span>
             </div>
         </div>
     );
@@ -154,7 +171,13 @@ const SelectField = ({ formik, name, label, options }) => (
         <label htmlFor={name} className="block mb-1 font-medium">{label}</label>
         <select id={name} {...formik.getFieldProps(name)} className="w-full p-3 bg-gray-700 text-gray-100 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500">
             <option value="">Select {label}</option>
-            {options.map((option) => <option key={option} value={option}>{option}</option>)}
+            {options.map((option) => (
+                typeof option === "object" ? (
+                <option key={option.id} value={option.id}>{option.name}</option>
+                ) : (
+                    <option key={option} value={option}>{option}</option>
+                )
+                ))}
         </select>
     </div>
 );
