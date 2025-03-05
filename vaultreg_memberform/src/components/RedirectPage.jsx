@@ -10,11 +10,11 @@ function RedirectPage() {
                     Your details are secure with us, and we can't wait to connect and grow together in faith.
                 </p>
                 <p className="mt-2 text-gray-400">
-                    Stay tuned for updates, events, and fellowship opportunities.
+                    Stay tuned for updates, events, and more.
                 </p>
-                <Link to="/" className="mt-6 inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md transition">
+                {/* <Link to="/" className="mt-6 inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md transition">
                     Back to Form
-                </Link>
+                </Link> */}
             </div>
         </div>
     );
