@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import vaultSvg from "../assets/images/vault_svg.jpeg"
 
 const LoadingSpinner = () => {
     return (
@@ -14,8 +15,8 @@ const LoadingSpinner = () => {
                     ease: "easeInOut"
                 }}
             >
-                <img src="/path-to-your-logo.png" alt="Loading" className="w-16 h-16" />
-                <div className="absolute w-24 h-24 border-4 border-gray-300 border-t-transparent border-b-transparent rounded-full animate-spin"></div>
+                <img src={vaultSvg} alt="Loading" className="w-8 h-8" />
+                <div className="absolute w-14 h-14 border-4 border-indigo-600 border-t-transparent border-b-transparent rounded-full animate-spin"></div>
             </motion.div>
         </div>
     );

@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-hot-toast';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 
 const MemberForm = () => {
@@ -14,6 +14,13 @@ const MemberForm = () => {
         "Primary School": "primary_school",
         "Other": "other"
     }
+
+    const genderOptions = {
+        Telios: "telios",
+        Elysian: "elysian"
+    }
+
+    const phoneRegex = /^(\+254\d{9}|07\d{8}|01\d{8}|\d{10,15})$/;
     
 
     const formik = useFormik({
@@ -43,11 +50,18 @@ const MemberForm = () => {
             secondName: Yup.string().required('Required'),
             date_of_birth: Yup.date().required('Required'),
             location: Yup.string().required('Required'),
-            phone: Yup.string().required('Required'),
+            phone: Yup.string()
+                .matches(phoneRegex, "Invalid phone number format")
+                .required('Required'),
+            alt_phone: Yup.string()
+                .matches(phoneRegex, "Invalid phone number format"),
             gender: Yup.string().required('Required'),
             contact_name: Yup.string().required('Required'),
-            contact_phone: Yup.string().required('Required'),
-            contact_alt_phone: Yup.string().required('Required'),
+            contact_phone: Yup.string()
+                .matches(phoneRegex, "Invalid phone number format")
+                .required('Required'),
+            contact_alt_phone: Yup.string()
+                .matches(phoneRegex, "Invalid phone number format"),
             relationship: Yup.string().required('Required'),
         }),
         onSubmit: async (values, { setSubmitting, resetForm }) => {
@@ -62,12 +76,12 @@ const MemberForm = () => {
                     phone: values.phone,
                     alt_phone: values.altPhone,
                     email: values.email,
-                    is_student: values.isStudent ? "Yes" : "No",
-                    school_type: values.isStudent ? schoolType[values.school_type]: '',
-                    school: values.isStudent ? values.school : '',
+                    is_student: values.isStudent,
+                    school_type: values.isStudent ? schoolType[values.school_type]: null,
+                    school: values.isStudent ? values.school : null,
                     occupation: values.occupation,
                     ag_group: values.group ? parseInt(values.group, 10) : null,
-                    gender: values.gender,
+                    gender: genderOptions[values.gender],
                     status: values.status,
                     contact_name: values.contact_name,
                     contact_phone: values.contact_phone,
@@ -75,18 +89,22 @@ const MemberForm = () => {
                     relationship: values.relationship,
                 };
 
+                console.log(memberData)
+
                 const response = await fetch(`${api}member`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(memberData),
                 });
 
+                const responseData = await response.json()
+                console.log(responseData)
                 if (response.ok) {
-                    toast.success("Member registered successfully!");
+                    toast.success("Registered successfully🤗🫶!");
                     resetForm();
                 } else {
                     const errorData = await response.json();
-                    toast.error(`Failed to register member. ${errorData.error || 'Please try again.'}`);
+                    toast.error(`Failed to register‼️. ${errorData.error || 'Please try again🙁.'}`);
                 }
             } catch (err) {
                 toast.error('An error occurred. Please try again later.');
@@ -98,15 +116,20 @@ const MemberForm = () => {
     });
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-6">
-            {loading && <LoadingSpinner />}
+        <div className="relative min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-6">
+            {loading && 
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50"
+                >
+                    <LoadingSpinner />
+                </div>
+            }
             <div className="mb-6 p-6 bg-gray-700 rounded-lg shadow-md">
                     <h1 className="text-2xl font-bold text-center text-indigo-600 mb-2">Vault Ministry</h1>
                     <p className="text-gray-300 text-center">
                         Welcome to Vault Forms. Please ensure the details you provide are correct and accurate. This information helps us stay connected and provide better support within the Vault family.
                     </p>
             </div>
-            <div className="w-full max-w-3xl bg-gray-800 shadow-lg rounded-lg p-8">
+            <div className={`w-full max-w-3xl bg-gray-800 shadow-lg rounded-lg p-8 transition ${loading ? "blur-sm pointer-events-none" : ""}`}>
                 <form onSubmit={formik.handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <InputField formik={formik} name="firstName" label="First Name" />
                     <InputField formik={formik} name="secondName" label="Second Name" />
