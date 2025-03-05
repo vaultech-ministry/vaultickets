@@ -173,7 +173,7 @@ const MemberForm = () => {
                 </form>
             </div>
             <div className='flex items-center justify-center m-4'>
-                <span>Vault Forms, powered by <strong>VaulTech</strong></span>
+                <span>Vault Forms, powered by <strong>Vaultech</strong></span>
             </div>
         </div>
     );
