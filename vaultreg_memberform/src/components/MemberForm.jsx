@@ -1,8 +1,11 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-hot-toast';
+import { useState } from 'react';
+import LoadingSpinner from './LoadingSpinner';
 
 const MemberForm = () => {
+    const [loading, setLoading] = useState(false);
     const api = import.meta.env.VITE_API_URL;
 
     const schoolType = {
@@ -48,6 +51,7 @@ const MemberForm = () => {
             relationship: Yup.string().required('Required'),
         }),
         onSubmit: async (values, { setSubmitting, resetForm }) => {
+            setLoading(true)
             try {
                 const memberData = {
                     first_name: values.firstName,
@@ -88,12 +92,14 @@ const MemberForm = () => {
                 toast.error('An error occurred. Please try again later.');
             } finally {
                 setSubmitting(false);
+                setLoading(false)
             }
         },
     });
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-6">
+            {loading && <LoadingSpinner />}
             <div className="mb-6 p-6 bg-gray-700 rounded-lg shadow-md">
                     <h1 className="text-2xl font-bold text-center text-indigo-600 mb-2">Vault Ministry</h1>
                     <p className="text-gray-300 text-center">
