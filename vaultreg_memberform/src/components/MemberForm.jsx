@@ -125,7 +125,7 @@ const MemberForm = () => {
             <div className="mb-6 p-6 bg-gray-700 rounded-lg shadow-md">
                     <h1 className="text-2xl font-bold text-center text-indigo-600 mb-2"><strong>Vault Ministry</strong> registration desk</h1>
                     <p className="text-gray-300 text-center">
-                        Welcome to Vault Forms. Please ensure the details you provide are correct and accurate. Please don't share this form with anyone outside the Vault family to avoid faulty statistics. This information helps us stay connected and provide better support within the Vault family.
+                        Welcome to Vault Forms. Please ensure the details you provide are correct and accurate. Don't share this form with anyone outside the Vault family to avoid faulty statistics. This information helps us stay connected and provide better support within the Vault family.
                     </p>
             </div>
             <div className={`w-full max-w-3xl bg-gray-800 shadow-lg rounded-lg p-8 transition ${loading ? "blur-sm pointer-events-none" : ""}`}>
