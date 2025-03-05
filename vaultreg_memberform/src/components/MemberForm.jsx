@@ -3,9 +3,11 @@ import * as Yup from 'yup';
 import { toast } from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
+import { useNavigate } from 'react-router-dom';
 
 const MemberForm = () => {
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate()
     const api = import.meta.env.VITE_API_URL;
 
     const schoolType = {
@@ -89,19 +91,16 @@ const MemberForm = () => {
                     relationship: values.relationship,
                 };
 
-                console.log(memberData)
-
                 const response = await fetch(`${api}member`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(memberData),
                 });
 
-                const responseData = await response.json()
-                console.log(responseData)
                 if (response.ok) {
                     toast.success("Registered successfully🤗🫶!");
                     resetForm();
+                    setTimeout(() => navigate("/vaulthanks"), 1000)
                 } else {
                     const errorData = await response.json();
                     toast.error(`Failed to register‼️. ${errorData.error || 'Please try again🙁.'}`);
@@ -124,9 +123,9 @@ const MemberForm = () => {
                 </div>
             }
             <div className="mb-6 p-6 bg-gray-700 rounded-lg shadow-md">
-                    <h1 className="text-2xl font-bold text-center text-indigo-600 mb-2">Vault Ministry</h1>
+                    <h1 className="text-2xl font-bold text-center text-indigo-600 mb-2"><strong>Vault Ministry</strong> registration desk</h1>
                     <p className="text-gray-300 text-center">
-                        Welcome to Vault Forms. Please ensure the details you provide are correct and accurate. This information helps us stay connected and provide better support within the Vault family.
+                        Welcome to Vault Forms. Please ensure the details you provide are correct and accurate. Please don't share this form with anyone outside the Vault family to avoid faulty statistics. This information helps us stay connected and provide better support within the Vault family.
                     </p>
             </div>
             <div className={`w-full max-w-3xl bg-gray-800 shadow-lg rounded-lg p-8 transition ${loading ? "blur-sm pointer-events-none" : ""}`}>
