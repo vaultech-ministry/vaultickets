@@ -7,8 +7,24 @@ import { useNavigate } from 'react-router-dom';
 
 const MemberForm = () => {
     const [loading, setLoading] = useState(false);
+    const [agGroups, setAgGroups] = useState([])
     const navigate = useNavigate()
     const api = import.meta.env.VITE_API_URL;
+
+
+    useEffect(() => {
+        const fetchGroups = async () => {
+            try {
+                const response = await fetch(`${api}group`);
+                if (!response.ok) throw new Error("Failed to fetch AG Groups");
+                const data = await response.json();
+                setAgGroups(data);
+            } catch (error) {
+                console.error("Error fetching AG Groups:", error);
+            }
+        };
+        fetchGroups();
+    }, []);
 
     const schoolType = {
         "University/College": "university",
@@ -82,7 +98,7 @@ const MemberForm = () => {
                     school_type: values.isStudent ? schoolType[values.school_type]: null,
                     school: values.isStudent ? values.school : null,
                     occupation: values.occupation,
-                    ag_group: values.group ? parseInt(values.group, 10) : null,
+                    ag_group: values.group,
                     gender: genderOptions[values.gender],
                     status: values.status,
                     contact_name: values.contact_name,
@@ -147,16 +163,7 @@ const MemberForm = () => {
                         </>
                     )}
                     <InputField formik={formik} name="occupation" label="Occupation" />
-                    <SelectField formik={formik} name="group" label="AG Group" options={[
-                        { id: 1, name: "Transformers" },
-                        { id: 2, name: "Pacesetters" },
-                        { id: 3, name: "Ignition" },
-                        { id: 4, name: "Relentless" },
-                        { id: 5, name: "Innovators" },
-                        { id: 6, name: "Gifted" },
-                        { id: 7, name: "Visionaries" },
-                        { id: 8, name: "Elevated" }
-                    ]} />
+                    <SelectField formik={formik} name="group" label="AG Group" options={agGroups} />
                     {/* <SelectField formik={formik} name="status" label="Status" options={["active", "inactive"]} /> */}
                     <fieldset className="col-span-1 md:col-span-2 mt-6">
                         <legend className="text-lg font-medium mb-4">Emergency Contact (next of kin)</legend>
@@ -199,12 +206,8 @@ const SelectField = ({ formik, name, label, options }) => (
         <label htmlFor={name} className="block mb-1 font-medium">{label}</label>
         <select id={name} {...formik.getFieldProps(name)} className="w-full p-3 bg-gray-700 text-gray-100 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500">
             <option value="">Select {label}</option>
-            {options.map((option) => (
-                typeof option === "object" ? (
-                <option key={option.id} value={option.id}>{option.name}</option>
-                ) : (
-                    <option key={option} value={option}>{option}</option>
-                )
+                {options.map((option) => (
+                    <option key={option.id} value={option.id}>{option.group_name}</option>
                 ))}
         </select>
     </div>
