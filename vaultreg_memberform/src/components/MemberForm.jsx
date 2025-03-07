@@ -99,7 +99,7 @@ const MemberForm = () => {
                     school: values.isStudent ? values.school : null,
                     occupation: values.occupation,
                     ag_group: values.group,
-                    gender: genderOptions[values.gender],
+                    gender: values.gender,
                     status: values.status,
                     contact_name: values.contact_name,
                     contact_phone: values.contact_phone,
