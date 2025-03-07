@@ -148,7 +148,7 @@ const MemberForm = () => {
                 <form onSubmit={formik.handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <InputField formik={formik} name="firstName" label="First Name" />
                     <InputField formik={formik} name="secondName" label="Second Name" />
-                    <InputField formik={formik} name="surName" label="Sur Name" />
+                    <InputField formik={formik} name="surName" label="Surname" />
                     <RadioField formik={formik} name="gender" label="Gender" options={genderOptions} />
                     <InputField formik={formik} name="date_of_birth" label="Date of Birth" type="date" />
                     <InputField formik={formik} name="location" label="Location" />
