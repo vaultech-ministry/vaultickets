@@ -34,8 +34,8 @@ const MemberForm = () => {
     }
 
     const genderOptions = {
-        Telios: "telios",
-        Elysian: "elysian"
+        "Telios (Male)": "telios",
+        "Elysian (Female)": "elysian"
     }
 
     const phoneRegex = /^(\+254\d{9}|07\d{8}|01\d{8}|\d{10,15})$/;
@@ -149,7 +149,7 @@ const MemberForm = () => {
                     <InputField formik={formik} name="firstName" label="First Name" />
                     <InputField formik={formik} name="secondName" label="Second Name" />
                     <InputField formik={formik} name="surName" label="Sur Name" />
-                    <RadioField formik={formik} name="gender" label="Gender" options={["Telios", "Elysian"]} />
+                    <RadioField formik={formik} name="gender" label="Gender" options={genderOptions} />
                     <InputField formik={formik} name="date_of_birth" label="Date of Birth" type="date" />
                     <InputField formik={formik} name="location" label="Location" />
                     <InputField formik={formik} name="phone" label="Phone" type="tel" />
@@ -226,10 +226,17 @@ const RadioField = ({ formik, name, label, options }) => (
     <div>
         <label className="block mb-1 font-medium">{label}</label>
         <div className="flex space-x-4">
-            {options.map((option) => (
-                <label key={option} className="flex items-center">
-                    <input type="radio" name={name} value={option} checked={formik.values[name] === option} onChange={formik.handleChange} className="mr-2 h-4 w-4 text-blue-500 focus:ring-blue-500" />
-                    {option}
+        {Object.entries(options).map(([label, value]) => (
+                <label key={value} className="flex items-center">
+                    <input
+                        type="radio"
+                        name={name}
+                        value={value}
+                        checked={formik.values[name] === value}
+                        onChange={formik.handleChange}
+                        className="mr-2 h-4 w-4 text-blue-500 focus:ring-blue-500"
+                    />
+                    {label}
                 </label>
             ))}
         </div>
