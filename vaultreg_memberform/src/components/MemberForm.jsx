@@ -158,7 +158,7 @@ const MemberForm = () => {
                     <CheckboxField formik={formik} name="isStudent" label="Are you a student?" />
                     {formik.values.isStudent && (
                         <>
-                            <SelectField formik={formik} name="school_type" label="School Type" options={["University/College", "High School", "Primary School", "Other"]} />
+                            <SelectField formik={formik} name="school_type" label="School Type" options={schoolType} />
                             <InputField formik={formik} name="school" label="School Name" />
                         </>
                     )}
@@ -204,11 +204,20 @@ const CheckboxField = ({ formik, name, label }) => (
 const SelectField = ({ formik, name, label, options }) => (
     <div>
         <label htmlFor={name} className="block mb-1 font-medium">{label}</label>
-        <select id={name} {...formik.getFieldProps(name)} className="w-full p-3 bg-gray-700 text-gray-100 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500">
+        <select
+            id={name}
+            {...formik.getFieldProps(name)}
+            className="w-full p-3 bg-gray-700 text-gray-100 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"
+        >
             <option value="">Select {label}</option>
-                {options.map((option) => (
+            {Array.isArray(options)
+                ? options.map((option) => (
                     <option key={option.id} value={option.id}>{option.group_name}</option>
-                ))}
+                ))
+                : Object.keys(options).map((key) => (
+                    <option key={key} value={options[key]}>{key}</option>
+                ))
+            }
         </select>
     </div>
 );
