@@ -238,7 +238,7 @@ const RadioField = ({ formik, name, label, options }) => (
                     />
                     {label}
                 </label>
-            ))}
+        ))}
         </div>
     </div>
 );
